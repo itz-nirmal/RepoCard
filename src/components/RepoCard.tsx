@@ -121,53 +121,53 @@ const RepoCard: React.FC<RepoCardProps> = ({ repoData, onCreateAnother }) => {
         {/* Statistics and Languages - Optimized Layout */}
         <div className="p-5 grid md:grid-cols-5 gap-5">
           {/* Statistics - Compact 2x2 Grid */}
-          <div className="md:col-span-2">
+          <div className="md:col-span-2 space-y-3">
             <h3 className="text-lg font-semibold mb-3 flex items-center gap-2" style={{ color: colorPalette.text }}>
               <Star className="w-4 h-4" style={{ color: colorPalette.primary }} />
               Repository Statistics
             </h3>
-            <div className="grid grid-cols-2 gap-2">
-              <div className="flex items-center gap-2 p-2 rounded-lg" style={{ backgroundColor: colorPalette.statBg }}>
-                <div className="p-1 bg-yellow-100 rounded-md">
-                  <Star className="w-3 h-3 text-yellow-600" />
+            <div className="grid grid-cols-2 gap-3">
+              <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: colorPalette.statBg }}>
+                <div className="p-2 bg-yellow-100 rounded-lg flex-shrink-0">
+                  <Star className="w-4 h-4 text-yellow-600" />
                 </div>
                 <div>
-                  <div className="text-xs font-bold" style={{ color: colorPalette.text }}>{formatNumber(repoData.stargazers_count)}</div>
+                  <div className="text-sm font-bold" style={{ color: colorPalette.text }}>{formatNumber(repoData.stargazers_count)}</div>
                   <div className="text-xs text-gray-600">Stars</div>
                 </div>
               </div>
-              <div className="flex items-center gap-2 p-2 rounded-lg" style={{ backgroundColor: colorPalette.statBg }}>
-                <div className="p-1 bg-blue-100 rounded-md">
-                  <GitFork className="w-3 h-3 text-blue-600" />
+              <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: colorPalette.statBg }}>
+                <div className="p-2 bg-blue-100 rounded-lg flex-shrink-0">
+                  <GitFork className="w-4 h-4 text-blue-600" />
                 </div>
                 <div>
-                  <div className="text-xs font-bold" style={{ color: colorPalette.text }}>{formatNumber(repoData.forks_count)}</div>
+                  <div className="text-sm font-bold" style={{ color: colorPalette.text }}>{formatNumber(repoData.forks_count)}</div>
                   <div className="text-xs text-gray-600">Forks</div>
                 </div>
               </div>
-              <div className="flex items-center gap-2 p-2 rounded-lg" style={{ backgroundColor: colorPalette.statBg }}>
-                <div className="p-1 bg-green-100 rounded-md">
-                  <Eye className="w-3 h-3 text-green-600" />
+              <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: colorPalette.statBg }}>
+                <div className="p-2 bg-green-100 rounded-lg flex-shrink-0">
+                  <Eye className="w-4 h-4 text-green-600" />
                 </div>
                 <div>
-                  <div className="text-xs font-bold" style={{ color: colorPalette.text }}>{formatNumber(repoData.watchers_count)}</div>
+                  <div className="text-sm font-bold" style={{ color: colorPalette.text }}>{formatNumber(repoData.watchers_count)}</div>
                   <div className="text-xs text-gray-600">Visitors</div>
                 </div>
               </div>
-              <div className="flex items-center gap-2 p-2 rounded-lg" style={{ backgroundColor: colorPalette.statBg }}>
-                <div className="p-1 bg-purple-100 rounded-md">
-                  <Users className="w-3 h-3 text-purple-600" />
+              <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: colorPalette.statBg }}>
+                <div className="p-2 bg-purple-100 rounded-lg flex-shrink-0">
+                  <Users className="w-4 h-4 text-purple-600" />
                 </div>
                 <div>
-                  <div className="text-xs font-bold" style={{ color: colorPalette.text }}>{repoData.contributorCount || 'N/A'}</div>
+                  <div className="text-sm font-bold" style={{ color: colorPalette.text }}>{repoData.contributorCount || 'N/A'}</div>
                   <div className="text-xs text-gray-600">Contributors</div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Languages - Horizontal Layout with Logos */}
-          <div className="md:col-span-3">
+          {/* Languages - Grid Layout with Logos */}
+          <div className="md:col-span-3 space-y-3">
             <h3 className="text-lg font-semibold mb-3 flex items-center gap-2" style={{ color: colorPalette.text }}>
               <div 
                 className="w-4 h-4 rounded flex items-center justify-center"
@@ -177,34 +177,35 @@ const RepoCard: React.FC<RepoCardProps> = ({ repoData, onCreateAnother }) => {
               </div>
               Languages
             </h3>
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-2 gap-3">
               {repoData.languages && Object.keys(repoData.languages).length > 0 ? (
-                Object.entries(repoData.languages).slice(0, 8).map(([language, bytes]: [string, any]) => {
+                Object.entries(repoData.languages).slice(0, 6).map(([language, bytes]: [string, any]) => {
                   const totalBytes = Object.values(repoData.languages).reduce((a: number, b: number) => a + b, 0);
                   const percentage = ((bytes / totalBytes) * 100).toFixed(1);
                   return (
                     <div 
                       key={language} 
-                      className="flex items-center gap-2 px-2 py-1.5 rounded-md transition-colors"
+                      className="flex items-center gap-3 p-3 rounded-lg"
                       style={{ backgroundColor: colorPalette.statBg }}
                     >
                       <img
                         src={getLanguageLogo(language)}
                         alt={language}
-                        className="w-4 h-4 flex-shrink-0"
-                        style={{ verticalAlign: 'middle' }}
+                        className="w-5 h-5 flex-shrink-0"
                       />
                       <div
-                        className="w-3 h-3 rounded-sm flex-shrink-0"
+                        className="w-3 h-3 rounded-full flex-shrink-0"
                         style={{ backgroundColor: getLanguageColor(language) }}
                       ></div>
-                      <span className="text-xs font-medium" style={{ color: colorPalette.text }}>{language}</span>
-                      <span className="text-xs text-gray-500">{percentage}%</span>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-medium truncate" style={{ color: colorPalette.text }}>{language}</div>
+                        <div className="text-xs text-gray-500">{percentage}%</div>
+                      </div>
                     </div>
                   );
                 })
               ) : (
-                <div className="p-2 rounded-md text-center w-full" style={{ backgroundColor: colorPalette.statBg }}>
+                <div className="p-3 rounded-lg text-center col-span-2" style={{ backgroundColor: colorPalette.statBg }}>
                   <p className="text-gray-500 text-sm">No language data</p>
                 </div>
               )}
@@ -214,20 +215,20 @@ const RepoCard: React.FC<RepoCardProps> = ({ repoData, onCreateAnother }) => {
 
         {/* Author and Top Contributors - Compact Layout */}
         <div 
-          className="p-5 border-t border-gray-200/50 grid md:grid-cols-2 gap-5"
+          className="p-5 border-t border-gray-200/50 grid md:grid-cols-2 gap-6"
           style={{ background: colorPalette.authorBg }}
         >
           {/* Author */}
           <div>
-            <h3 className="text-base font-semibold mb-2 flex items-center gap-2" style={{ color: colorPalette.text }}>
-              <Users className="w-3 h-3" style={{ color: colorPalette.primary }} />
+            <h3 className="text-base font-semibold mb-3 flex items-center gap-2" style={{ color: colorPalette.text }}>
+              <Users className="w-4 h-4" style={{ color: colorPalette.primary }} />
               Repository Author
             </h3>
-            <div className="flex items-center gap-2 p-2 bg-white/50 rounded-lg">
+            <div className="flex items-center gap-3 p-3 bg-white/50 rounded-lg">
               <img
                 src={repoData.owner.avatar_url}
                 alt={repoData.owner.login}
-                className="w-8 h-8 rounded-full border-2"
+                className="w-10 h-10 rounded-full border-2 flex-shrink-0"
                 style={{ borderColor: colorPalette.primary }}
               />
               <div>
@@ -237,37 +238,37 @@ const RepoCard: React.FC<RepoCardProps> = ({ repoData, onCreateAnother }) => {
             </div>
           </div>
 
-          {/* Top Contributors - Compact */}
+          {/* Top Contributors */}
           <div>
-            <h3 className="text-base font-semibold mb-2 flex items-center gap-2" style={{ color: colorPalette.text }}>
-              <Star className="w-3 h-3" style={{ color: colorPalette.primary }} />
+            <h3 className="text-base font-semibold mb-3 flex items-center gap-2" style={{ color: colorPalette.text }}>
+              <Star className="w-4 h-4" style={{ color: colorPalette.primary }} />
               Top Contributors
             </h3>
-            <div className="space-y-1">
+            <div className="space-y-2">
               {repoData.contributors && repoData.contributors.length > 0 ? (
-                repoData.contributors.slice(0, 2).map((contributor: any, index: number) => (
-                  <div key={contributor.login} className="flex items-center gap-2 p-2 bg-white/50 rounded-lg">
+                repoData.contributors.slice(0, 1).map((contributor: any, index: number) => (
+                  <div key={contributor.login} className="flex items-center gap-3 p-3 bg-white/50 rounded-lg">
                     <div className="relative">
                       <img
                         src={contributor.avatar_url}
                         alt={contributor.login}
-                        className="w-6 h-6 rounded-full"
+                        className="w-10 h-10 rounded-full flex-shrink-0"
                       />
                       {index === 0 && (
-                        <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-yellow-500 rounded-full flex items-center justify-center">
-                          <Star className="w-1 h-1 text-white" />
+                        <div className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-500 rounded-full flex items-center justify-center">
+                          <Star className="w-2 h-2 text-white" />
                         </div>
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-xs font-medium truncate" style={{ color: colorPalette.text }}>{contributor.login}</div>
+                      <div className="text-sm font-medium truncate" style={{ color: colorPalette.text }}>{contributor.login}</div>
                       <div className="text-xs text-gray-600">{formatNumber(contributor.contributions)} contributions</div>
                     </div>
                   </div>
                 ))
               ) : (
-                <div className="p-2 bg-white/50 rounded-lg text-center">
-                  <p className="text-gray-500 text-xs">No contributor data</p>
+                <div className="p-3 bg-white/50 rounded-lg text-center">
+                  <p className="text-gray-500 text-sm">No contributor data</p>
                 </div>
               )}
             </div>

@@ -2,12 +2,12 @@ import html2canvas from 'html2canvas';
 
 export const downloadCard = async (element: HTMLElement, filename: string) => {
   try {
-    // Wait a bit for any animations to complete
-    await new Promise(resolve => setTimeout(resolve, 500));
+    // Wait for any animations to complete
+    await new Promise(resolve => setTimeout(resolve, 300));
 
-    // Configure html2canvas options for high quality and better text rendering
+    // Configure html2canvas for better rendering
     const canvas = await html2canvas(element, {
-      scale: 4, // Even higher scale for crisp rendering
+      scale: 2,
       useCORS: true,
       allowTaint: true,
       backgroundColor: null,
@@ -20,100 +20,91 @@ export const downloadCard = async (element: HTMLElement, filename: string) => {
       windowHeight: element.offsetHeight,
       // Better text rendering
       letterRendering: true,
-      // Force hardware acceleration
+      // Use DOM rendering instead of foreign object
       foreignObjectRendering: false,
-      // Ignore elements that might cause issues
-      ignoreElements: (element) => {
-        return element.tagName === 'IFRAME' || element.tagName === 'SCRIPT';
-      },
-      // Custom image loading
-      onclone: (clonedDoc) => {
-        // Fix all icon and element alignment issues
-        const icons = clonedDoc.querySelectorAll('svg');
-        icons.forEach((icon) => {
-          icon.style.verticalAlign = 'middle';
-          icon.style.display = 'inline-block';
-          icon.style.transform = 'translateY(-1px)';
-        });
-
-        // Fix all images (including language logos)
-        const images = clonedDoc.querySelectorAll('img');
-        images.forEach((img) => {
-          img.style.verticalAlign = 'middle';
-          img.style.display = 'inline-block';
-          img.style.transform = 'translateY(-1px)';
-          // Force dimensions to prevent layout shifts
-          if (img.offsetWidth && img.offsetHeight) {
-            img.style.width = img.offsetWidth + 'px';
-            img.style.height = img.offsetHeight + 'px';
+      // Custom clone processing
+      onclone: (clonedDoc, element) => {
+        // Fix all text elements
+        const allTextElements = clonedDoc.querySelectorAll('*');
+        allTextElements.forEach((el) => {
+          const htmlEl = el as HTMLElement;
+          if (htmlEl.style) {
+            // Ensure proper text rendering
+            htmlEl.style.fontFamily = 'system-ui, -apple-system, sans-serif';
+            htmlEl.style.webkitFontSmoothing = 'antialiased';
+            htmlEl.style.mozOsxFontSmoothing = 'grayscale';
+            
+            // Fix line height and spacing
+            if (htmlEl.tagName === 'DIV' || htmlEl.tagName === 'SPAN' || htmlEl.tagName === 'P') {
+              htmlEl.style.lineHeight = '1.2';
+              htmlEl.style.letterSpacing = 'normal';
+            }
           }
         });
 
-        // Fix all flex container alignment and text baseline
-        const flexElements = clonedDoc.querySelectorAll('.flex');
-        flexElements.forEach((el) => {
-          (el as HTMLElement).style.alignItems = 'center';
-          (el as HTMLElement).style.display = 'flex';
+        // Fix all SVG icons
+        const svgElements = clonedDoc.querySelectorAll('svg');
+        svgElements.forEach((svg) => {
+          svg.style.display = 'inline-block';
+          svg.style.verticalAlign = 'middle';
+          svg.style.flexShrink = '0';
         });
 
-        // Fix text alignment in flex containers
-        const textElements = clonedDoc.querySelectorAll('span, div, p');
-        textElements.forEach((el) => {
-          (el as HTMLElement).style.lineHeight = '1';
-          (el as HTMLElement).style.display = 'inline-block';
-          (el as HTMLElement).style.verticalAlign = 'middle';
+        // Fix all images
+        const images = clonedDoc.querySelectorAll('img');
+        images.forEach((img) => {
+          img.style.display = 'inline-block';
+          img.style.verticalAlign = 'middle';
+          img.style.flexShrink = '0';
+        });
+
+        // Fix flex containers
+        const flexElements = clonedDoc.querySelectorAll('.flex');
+        flexElements.forEach((el) => {
+          const htmlEl = el as HTMLElement;
+          htmlEl.style.display = 'flex';
+          htmlEl.style.alignItems = 'center';
+          htmlEl.style.gap = htmlEl.style.gap || '0.5rem';
+        });
+
+        // Fix grid containers
+        const gridElements = clonedDoc.querySelectorAll('.grid');
+        gridElements.forEach((el) => {
+          const htmlEl = el as HTMLElement;
+          htmlEl.style.display = 'grid';
+        });
+
+        // Ensure proper spacing
+        const spacingElements = clonedDoc.querySelectorAll('[class*="gap-"], [class*="space-"]');
+        spacingElements.forEach((el) => {
+          const htmlEl = el as HTMLElement;
+          if (htmlEl.classList.contains('gap-2')) {
+            htmlEl.style.gap = '0.5rem';
+          } else if (htmlEl.classList.contains('gap-3')) {
+            htmlEl.style.gap = '0.75rem';
+          } else if (htmlEl.classList.contains('gap-4')) {
+            htmlEl.style.gap = '1rem';
+          }
         });
       }
     });
 
-    // Convert canvas to blob with high quality
+    // Convert to blob and download
     canvas.toBlob((blob) => {
       if (blob) {
-        // Create download link
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
         link.download = filename;
-        
-        // Trigger download
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
-        // Clean up
         URL.revokeObjectURL(url);
       }
     }, 'image/png', 1.0);
 
   } catch (error) {
     console.error('Error downloading card:', error);
-    
-    // Fallback: Try with different settings
-    try {
-      const canvas = await html2canvas(element, {
-        scale: 2,
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: '#ffffff',
-        logging: false
-      });
-
-      canvas.toBlob((blob) => {
-        if (blob) {
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = filename;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          URL.revokeObjectURL(url);
-        }
-      }, 'image/png', 0.95);
-
-    } catch (fallbackError) {
-      console.error('Fallback download also failed:', fallbackError);
-      alert('Download failed. Please try again or check your browser settings.');
-    }
+    alert('Download failed. Please try again.');
   }
 };
