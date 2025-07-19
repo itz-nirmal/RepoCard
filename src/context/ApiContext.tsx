@@ -282,8 +282,7 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         ...repoData,
         languages,
         contributors,
-        contributorCount,
-        generatedDescription
+        contributorCount
       };
     } catch (error) {
       console.error('Error fetching repository data:', error);

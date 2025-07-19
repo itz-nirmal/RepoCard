@@ -102,28 +102,12 @@ const RepoCard: React.FC<RepoCardProps> = ({ repoData, onCreateAnother }) => {
           </div>
         </div>
 
-        {/* Description */}
-        <div className="p-5 border-b border-gray-200/50">
-          <div 
-            className="rounded-xl p-4"
-            style={{ background: colorPalette.sectionBg }}
-          >
-            <h3 className="text-lg font-semibold mb-2 flex items-center gap-2 leading-none" style={{ color: colorPalette.text }}>
-              <Code className="w-4 h-4 flex-shrink-0" style={{ color: colorPalette.primary }} />
-              Project Description
-            </h3>
-            <p className="leading-relaxed" style={{ color: colorPalette.text }}>
-              {repoData.description || repoData.generatedDescription || 'No description available.'}
-            </p>
-          </div>
-        </div>
-
         {/* Statistics and Languages - Optimized Layout */}
         <div className="p-5 grid md:grid-cols-5 gap-5">
           {/* Statistics - Compact 2x2 Grid */}
           <div className="md:col-span-2 space-y-3">
             <h3 className="text-lg font-semibold mb-3 flex items-center gap-2 leading-none" style={{ color: colorPalette.text }}>
-              <Star className="w-4 h-4 flex-shrink-0" style={{ color: colorPalette.primary }} />
+              <Star className="w-4 h-4 flex-shrink-0 inline-block align-middle" style={{ color: colorPalette.primary }} />
               Repository Statistics
             </h3>
             <div className="grid grid-cols-2 gap-3">
@@ -169,12 +153,7 @@ const RepoCard: React.FC<RepoCardProps> = ({ repoData, onCreateAnother }) => {
           {/* Languages - Grid Layout with Logos */}
           <div className="md:col-span-3 space-y-3">
             <h3 className="text-lg font-semibold mb-3 flex items-center gap-2 leading-none" style={{ color: colorPalette.text }}>
-              <div 
-                className="w-4 h-4 rounded flex items-center justify-center flex-shrink-0"
-                style={{ backgroundColor: colorPalette.primary }}
-              >
-                <Code className="w-2.5 h-2.5 text-white" />
-              </div>
+              <Code className="w-4 h-4 flex-shrink-0 inline-block align-middle" style={{ color: colorPalette.primary }} />
               Languages
             </h3>
             <div className="grid grid-cols-2 gap-3">
@@ -219,7 +198,7 @@ const RepoCard: React.FC<RepoCardProps> = ({ repoData, onCreateAnother }) => {
           {/* Author */}
           <div>
             <h3 className="text-base font-semibold mb-3 flex items-center gap-2 leading-none" style={{ color: colorPalette.text }}>
-              <Users className="w-4 h-4 flex-shrink-0" style={{ color: colorPalette.primary }} />
+              <Users className="w-4 h-4 flex-shrink-0 inline-block align-middle" style={{ color: colorPalette.primary }} />
               Repository Author
             </h3>
             <div className="flex items-center gap-3 p-2 bg-white/50 rounded-lg">
@@ -239,7 +218,7 @@ const RepoCard: React.FC<RepoCardProps> = ({ repoData, onCreateAnother }) => {
           {/* Top Contributors */}
           <div>
             <h3 className="text-base font-semibold mb-3 flex items-center gap-2 leading-none" style={{ color: colorPalette.text }}>
-              <Star className="w-4 h-4 flex-shrink-0" style={{ color: colorPalette.primary }} />
+              <Star className="w-4 h-4 flex-shrink-0 inline-block align-middle" style={{ color: colorPalette.primary }} />
               Top Contributors
             </h3>
             <div>
