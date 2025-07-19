@@ -42,7 +42,7 @@ const RepoCard: React.FC<RepoCardProps> = ({ repoData, onCreateAnother }) => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto space-y-8">
+    <div className="w-full max-w-4xl mx-auto space-y-12">
       {/* Action Buttons */}
       <div className="flex justify-center gap-6">
         <button
@@ -188,6 +188,12 @@ const RepoCard: React.FC<RepoCardProps> = ({ repoData, onCreateAnother }) => {
                       className="flex items-center gap-2 px-2 py-1.5 rounded-md transition-colors"
                       style={{ backgroundColor: colorPalette.statBg }}
                     >
+                      <img
+                        src={getLanguageLogo(language)}
+                        alt={language}
+                        className="w-4 h-4 flex-shrink-0"
+                        style={{ verticalAlign: 'middle' }}
+                      />
                       <div
                         className="w-3 h-3 rounded-sm flex-shrink-0"
                         style={{ backgroundColor: getLanguageColor(language) }}

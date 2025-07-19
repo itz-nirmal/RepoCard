@@ -26,123 +26,235 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const generateIntelligentDescription = (readmeContent: string, repoName: string, languages: any): string => {
     if (!readmeContent) return '';
     
-    // Clean and process README content
+    // Clean and process README content more thoroughly
     const cleanContent = readmeContent
       .replace(/```[\s\S]*?```/g, '') // Remove code blocks
+      .replace(/`[^`]+`/g, '') // Remove inline code
       .replace(/!\[.*?\]\(.*?\)/g, '') // Remove images
       .replace(/\[.*?\]\(.*?\)/g, '') // Remove links
-      .replace(/#+ /g, '') // Remove headers
+      .replace(/#{1,6}\s+/g, '') // Remove markdown headers
       .replace(/\*\*([^*]+)\*\*/g, '$1') // Remove bold formatting
       .replace(/\*([^*]+)\*/g, '$1') // Remove italic formatting
-      .replace(/`([^`]+)`/g, '$1') // Remove inline code
+      .replace(/>\s+/g, '') // Remove blockquotes
+      .replace(/[-*+]\s+/g, '') // Remove list markers
+      .replace(/\d+\.\s+/g, '') // Remove numbered list markers
       .replace(/\n+/g, ' ') // Replace newlines with spaces
+      .replace(/\s+/g, ' ') // Normalize whitespace
       .trim();
 
-    // Extract meaningful sentences
+    // Extract meaningful sentences that describe the project
     const sentences = cleanContent
       .split(/[.!?]+/)
       .map(s => s.trim())
-      .filter(s => s.length > 20 && s.length < 200)
-      .filter(s => !s.toLowerCase().includes('installation'))
-      .filter(s => !s.toLowerCase().includes('getting started'))
-      .filter(s => !s.toLowerCase().includes('contributing'))
-      .filter(s => !s.toLowerCase().includes('license'));
+      .filter(s => s.length > 15 && s.length < 150)
+      .filter(s => {
+        const lower = s.toLowerCase();
+        return !lower.includes('installation') &&
+               !lower.includes('getting started') &&
+               !lower.includes('contributing') &&
+               !lower.includes('license') &&
+               !lower.includes('requirements') &&
+               !lower.includes('dependencies') &&
+               !lower.includes('setup') &&
+               !lower.includes('download') &&
+               !lower.includes('clone') &&
+               !lower.includes('npm install') &&
+               !lower.includes('yarn') &&
+               !lower.includes('git clone') &&
+               !lower.includes('usage:') &&
+               !lower.includes('example:') &&
+               !lower.includes('demo:');
+      });
 
-    // Identify project type based on languages and content
+    // Identify project type and purpose based on languages and content
     const primaryLanguages = Object.keys(languages || {});
-    let projectType = '';
+    const content = cleanContent.toLowerCase();
+    let projectType = 'software project';
+    let projectPurpose = '';
     
+    // Determine project type from languages
     if (primaryLanguages.includes('JavaScript') || primaryLanguages.includes('TypeScript')) {
-      if (cleanContent.toLowerCase().includes('react') || cleanContent.toLowerCase().includes('vue') || cleanContent.toLowerCase().includes('angular')) {
+      if (content.includes('react') || content.includes('vue') || content.includes('angular') || content.includes('frontend')) {
         projectType = 'web application';
-      } else if (cleanContent.toLowerCase().includes('node') || cleanContent.toLowerCase().includes('express')) {
+      } else if (content.includes('node') || content.includes('express') || content.includes('api') || content.includes('server')) {
         projectType = 'backend service';
+      } else if (content.includes('mobile') || content.includes('react native')) {
+        projectType = 'mobile application';
       } else {
         projectType = 'JavaScript project';
       }
     } else if (primaryLanguages.includes('Python')) {
-      if (cleanContent.toLowerCase().includes('django') || cleanContent.toLowerCase().includes('flask') || cleanContent.toLowerCase().includes('fastapi')) {
+      if (content.includes('django') || content.includes('flask') || content.includes('fastapi')) {
         projectType = 'web framework';
-      } else if (cleanContent.toLowerCase().includes('machine learning') || cleanContent.toLowerCase().includes('ai') || cleanContent.toLowerCase().includes('data')) {
+      } else if (content.includes('machine learning') || content.includes('ai') || content.includes('data science') || content.includes('neural')) {
         projectType = 'data science tool';
+      } else if (content.includes('automation') || content.includes('script')) {
+        projectType = 'automation tool';
       } else {
         projectType = 'Python application';
       }
-    } else if (primaryLanguages.includes('Java')) {
-      projectType = 'Java application';
-    } else if (primaryLanguages.includes('Go')) {
-      projectType = 'Go service';
-    } else if (primaryLanguages.includes('Rust')) {
-      projectType = 'Rust application';
-    } else if (primaryLanguages.includes('C++') || primaryLanguages.includes('C')) {
-      projectType = 'system application';
-    } else {
-      projectType = 'software project';
     }
 
-    // Find the most descriptive sentences
+    // Determine project purpose from content
+    if (content.includes('portfolio') || content.includes('showcase')) {
+      projectPurpose = 'showcasing skills and projects';
+    } else if (content.includes('e-commerce') || content.includes('shop') || content.includes('store')) {
+      projectPurpose = 'online commerce and shopping';
+    } else if (content.includes('blog') || content.includes('cms') || content.includes('content management')) {
+      projectPurpose = 'content management and publishing';
+    } else if (content.includes('dashboard') || content.includes('admin') || content.includes('analytics')) {
+      projectPurpose = 'data visualization and management';
+    } else if (content.includes('game') || content.includes('gaming')) {
+      projectPurpose = 'gaming and entertainment';
+    } else if (content.includes('chat') || content.includes('messaging') || content.includes('social')) {
+      projectPurpose = 'communication and social interaction';
+    } else if (content.includes('api') || content.includes('service') || content.includes('microservice')) {
+      projectPurpose = 'providing backend services and APIs';
+    } else if (content.includes('tool') || content.includes('utility') || content.includes('helper')) {
+      projectPurpose = 'providing useful tools and utilities';
+    }
+
+    // Find the most descriptive sentences that explain what the project does
     let description = '';
     
-    // Look for sentences that describe what the project does
+    // Priority 1: Look for sentences that explicitly describe functionality
     const descriptiveSentences = sentences.filter(s => {
       const lower = s.toLowerCase();
       return (
-        lower.includes('is a') || 
+        lower.includes('is a') ||
+        lower.includes('is an') ||
         lower.includes('provides') || 
         lower.includes('allows') || 
         lower.includes('helps') || 
         lower.includes('enables') || 
         lower.includes('designed to') ||
+        lower.includes('designed for') ||
         lower.includes('built for') ||
+        lower.includes('built to') ||
         lower.includes('tool for') ||
         lower.includes('library for') ||
-        lower.includes('framework for')
+        lower.includes('framework for') ||
+        lower.includes('platform for') ||
+        lower.includes('solution for') ||
+        lower.includes('application for') ||
+        lower.includes('system for') ||
+        lower.includes('creates') ||
+        lower.includes('generates') ||
+        lower.includes('manages') ||
+        lower.includes('handles')
+      );
+    });
+
+    // Priority 2: Look for sentences that mention key features
+    const featureSentences = sentences.filter(s => {
+      const lower = s.toLowerCase();
+      return (
+        lower.includes('features') ||
+        lower.includes('includes') ||
+        lower.includes('supports') ||
+        lower.includes('offers') ||
+        lower.includes('implements') ||
+        lower.includes('with') && (lower.includes('responsive') || lower.includes('modern') || lower.includes('interactive'))
+      );
+    });
+
+    // Priority 3: Look for sentences that describe the project's domain
+    const domainSentences = sentences.filter(s => {
+      const lower = s.toLowerCase();
+      return (
+        lower.includes('web') ||
+        lower.includes('mobile') ||
+        lower.includes('desktop') ||
+        lower.includes('cloud') ||
+        lower.includes('database') ||
+        lower.includes('frontend') ||
+        lower.includes('backend') ||
+        lower.includes('fullstack')
       );
     });
 
     if (descriptiveSentences.length > 0) {
       description = descriptiveSentences[0];
+      // Add a second sentence if the first is short
+      if (description.length < 60 && descriptiveSentences.length > 1) {
+        description += ' ' + descriptiveSentences[1];
+      } else if (description.length < 60 && featureSentences.length > 0) {
+        description += ' ' + featureSentences[0];
+      }
+    } else if (featureSentences.length > 0) {
+      description = featureSentences[0];
+      if (description.length < 60 && domainSentences.length > 0) {
+        description += ' ' + domainSentences[0];
+      }
+    } else if (domainSentences.length > 0) {
+      description = domainSentences[0];
+      if (description.length < 60 && sentences.length > 0) {
+        description += ' ' + sentences[0];
+      }
     } else if (sentences.length > 0) {
-      // Use the first meaningful sentence
+      // Use the first two meaningful sentences
       description = sentences[0];
+      if (description.length < 60 && sentences.length > 1) {
+        description += ' ' + sentences[1];
+      }
     }
 
-    // If we still don't have a good description, create one
+    // If we still don't have a good description, create an intelligent one
     if (!description || description.length < 30) {
-      const features = [];
-      const content = cleanContent.toLowerCase();
+      let intelligentDescription = '';
       
-      if (content.includes('api')) features.push('API integration');
-      if (content.includes('database')) features.push('database management');
-      if (content.includes('ui') || content.includes('interface')) features.push('user interface');
-      if (content.includes('authentication')) features.push('authentication');
-      if (content.includes('real-time') || content.includes('realtime')) features.push('real-time features');
-      if (content.includes('responsive')) features.push('responsive design');
-      if (content.includes('mobile')) features.push('mobile support');
-      if (content.includes('performance')) features.push('performance optimization');
-      
-      if (features.length > 0) {
-        description = `A modern ${projectType} featuring ${features.slice(0, 2).join(' and ')}.`;
+      if (projectPurpose) {
+        intelligentDescription = `A modern ${projectType} focused on ${projectPurpose}.`;
       } else {
-        description = `An innovative ${projectType} built with ${primaryLanguages.slice(0, 2).join(' and ')}.`;
+        // Extract key features from content
+        const features = [];
+        if (content.includes('responsive')) features.push('responsive design');
+        if (content.includes('real-time') || content.includes('realtime')) features.push('real-time functionality');
+        if (content.includes('api')) features.push('API integration');
+        if (content.includes('database')) features.push('data management');
+        if (content.includes('authentication') || content.includes('auth')) features.push('user authentication');
+        if (content.includes('dashboard')) features.push('analytics dashboard');
+        if (content.includes('mobile')) features.push('mobile compatibility');
+        if (content.includes('interactive')) features.push('interactive features');
+        
+        if (features.length >= 2) {
+          intelligentDescription = `A comprehensive ${projectType} featuring ${features[0]} and ${features[1]}.`;
+        } else if (features.length === 1) {
+          intelligentDescription = `An innovative ${projectType} with ${features[0]} capabilities.`;
+        } else {
+          intelligentDescription = `A well-crafted ${projectType} built with ${primaryLanguages.slice(0, 2).join(' and ')}.`;
+        }
       }
+      
+      // Add a second line about the technology stack or purpose
+      if (primaryLanguages.length > 0) {
+        intelligentDescription += ` Built with ${primaryLanguages.slice(0, 2).join(' and ')} for optimal performance and maintainability.`;
+      } else {
+        intelligentDescription += ` Designed with modern development practices and user experience in mind.`;
+      }
+      
+      description = intelligentDescription;
     }
 
-    // Ensure the description is concise (2 lines max)
+    // Ensure the description is properly formatted and concise
+    description = description.replace(/\s+/g, ' ').trim();
+    
+    // Limit to approximately 2 lines (around 120-140 characters)
     const words = description.split(' ');
-    if (words.length > 25) {
-      description = words.slice(0, 25).join(' ') + '...';
+    if (words.length > 22) {
+      description = words.slice(0, 22).join(' ') + '...';
     }
 
-    // Add a second line if the description is too short
-    if (description.length < 80 && sentences.length > 1) {
-      const secondSentence = sentences.find(s => s !== description && s.length < 100);
-      if (secondSentence) {
-        description += ' ' + secondSentence;
+    // Ensure it ends with proper punctuation
+    if (!description.match(/[.!?]$/)) {
+      if (description.endsWith('...')) {
+        // Keep the ellipsis
+      } else {
+        description += '.';
       }
     }
 
-    return description || `A comprehensive ${projectType} with modern features and functionality.`;
+    return description || `A comprehensive ${projectType} designed for modern development needs and user experience.`;
   };
 
   const fetchRepositoryData = async (url: string) => {

@@ -52,13 +52,12 @@ const Hero: React.FC = () => {
             <div className="flex items-center gap-4 mb-6">
               <div className="relative">
                 <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full opacity-50 blur-sm animate-pulse"></div>
-                <div className="relative bg-gray-900 p-4 rounded-full">
+                <div className="relative bg-gray-900/80 p-4 rounded-full backdrop-blur-sm">
                   <Github className="w-12 h-12 text-white" />
                 </div>
               </div>
-              <h1 className="text-5xl md:text-6xl font-bold text-white relative">
-                <span className="relative z-10">RepoCard</span>
-                <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-lg opacity-30 blur-sm animate-pulse"></div>
+              <h1 className="text-5xl md:text-6xl font-bold text-white">
+                RepoCard
               </h1>
             </div>
 

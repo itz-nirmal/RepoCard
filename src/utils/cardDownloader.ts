@@ -28,41 +28,40 @@ export const downloadCard = async (element: HTMLElement, filename: string) => {
       },
       // Custom image loading
       onclone: (clonedDoc) => {
-        // Fix all SVG icon alignment issues
+        // Fix all icon and element alignment issues
         const icons = clonedDoc.querySelectorAll('svg');
         icons.forEach((icon) => {
-          icon.style.verticalAlign = 'baseline';
+          icon.style.verticalAlign = 'middle';
           icon.style.display = 'inline-block';
-          icon.style.transform = 'translateY(0)';
-          icon.style.position = 'relative';
-          icon.style.top = '0';
-          icon.style.marginTop = '0';
-          icon.style.marginBottom = '0';
+          icon.style.transform = 'translateY(-1px)';
         });
 
-        // Fix all flex container alignment
-        const flexElements = clonedDoc.querySelectorAll('*');
-        flexElements.forEach((el) => {
-          const style = window.getComputedStyle(el);
-          if (style.display === 'flex') {
-            (el as HTMLElement).style.alignItems = 'center';
-            (el as HTMLElement).style.justifyContent = style.justifyContent;
-          }
-        });
-
-        // Ensure all images have proper dimensions and alignment
+        // Fix all images (including language logos)
         const images = clonedDoc.querySelectorAll('img');
         images.forEach((img) => {
           img.style.verticalAlign = 'middle';
           img.style.display = 'inline-block';
-          img.style.transform = 'translateY(0)';
-          img.style.position = 'relative';
-          img.style.top = '0';
+          img.style.transform = 'translateY(-1px)';
           // Force dimensions to prevent layout shifts
           if (img.offsetWidth && img.offsetHeight) {
             img.style.width = img.offsetWidth + 'px';
             img.style.height = img.offsetHeight + 'px';
           }
+        });
+
+        // Fix all flex container alignment and text baseline
+        const flexElements = clonedDoc.querySelectorAll('.flex');
+        flexElements.forEach((el) => {
+          (el as HTMLElement).style.alignItems = 'center';
+          (el as HTMLElement).style.display = 'flex';
+        });
+
+        // Fix text alignment in flex containers
+        const textElements = clonedDoc.querySelectorAll('span, div, p');
+        textElements.forEach((el) => {
+          (el as HTMLElement).style.lineHeight = '1';
+          (el as HTMLElement).style.display = 'inline-block';
+          (el as HTMLElement).style.verticalAlign = 'middle';
         });
       }
     });
