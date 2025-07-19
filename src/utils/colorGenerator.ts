@@ -12,110 +12,110 @@ export interface ColorPalette {
 }
 
 const colorPalettes: ColorPalette[] = [
-  // Coral Sunset - Warm and energetic
+  // Dark Charcoal - Deep professional
   {
-    primary: '#FF6B6B',
-    secondary: '#FF8E53',
-    accent: '#4ECDC4',
-    background: 'linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%)',
-    text: '#2C3E50',
-    gradient: 'linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%)',
-    cardBg: 'linear-gradient(135deg, #FFF5F5 0%, #FFF0E6 100%)',
-    statBg: 'rgba(255, 107, 107, 0.1)',
-    sectionBg: 'linear-gradient(135deg, #FFE5E5 0%, #FFE5CC 100%)',
-    authorBg: 'linear-gradient(135deg, #FFEBEB 0%, #FFEEDD 100%)'
+    primary: "#4A5568",
+    secondary: "#2D3748",
+    accent: "#63B3ED",
+    background: "linear-gradient(135deg, #1A202C 0%, #2D3748 100%)",
+    text: "#FFFFFF",
+    gradient: "linear-gradient(135deg, #1A202C 0%, #2D3748 100%)",
+    cardBg: "linear-gradient(135deg, #1A202C 0%, #2D3748 100%)",
+    statBg: "rgba(255, 255, 255, 0.1)",
+    sectionBg: "linear-gradient(135deg, #2D3748 0%, #4A5568 100%)",
+    authorBg: "linear-gradient(135deg, #2D3748 0%, #4A5568 100%)",
   },
-  // Ocean Breeze - Cool and professional
+  // Dark Navy - Sophisticated
   {
-    primary: '#3498DB',
-    secondary: '#2980B9',
-    accent: '#1ABC9C',
-    background: 'linear-gradient(135deg, #3498DB 0%, #2980B9 100%)',
-    text: '#2C3E50',
-    gradient: 'linear-gradient(135deg, #3498DB 0%, #2980B9 100%)',
-    cardBg: 'linear-gradient(135deg, #EBF8FF 0%, #E0F2FE 100%)',
-    statBg: 'rgba(52, 152, 219, 0.1)',
-    sectionBg: 'linear-gradient(135deg, #DBEAFE 0%, #CFFAFE 100%)',
-    authorBg: 'linear-gradient(135deg, #E0F2FE 0%, #CCFBF1 100%)'
+    primary: "#3182CE",
+    secondary: "#2C5282",
+    accent: "#68D391",
+    background: "linear-gradient(135deg, #1E293B 0%, #334155 100%)",
+    text: "#FFFFFF",
+    gradient: "linear-gradient(135deg, #1E293B 0%, #334155 100%)",
+    cardBg: "linear-gradient(135deg, #0F172A 0%, #1E293B 100%)",
+    statBg: "rgba(255, 255, 255, 0.1)",
+    sectionBg: "linear-gradient(135deg, #1E293B 0%, #334155 100%)",
+    authorBg: "linear-gradient(135deg, #1E293B 0%, #334155 100%)",
   },
-  // Purple Dream - Creative and innovative
+  // Dark Purple - Mysterious
   {
-    primary: '#9B59B6',
-    secondary: '#8E44AD',
-    accent: '#E74C3C',
-    background: 'linear-gradient(135deg, #9B59B6 0%, #8E44AD 100%)',
-    text: '#2C3E50',
-    gradient: 'linear-gradient(135deg, #9B59B6 0%, #8E44AD 100%)',
-    cardBg: 'linear-gradient(135deg, #FAF5FF 0%, #F3E8FF 100%)',
-    statBg: 'rgba(155, 89, 182, 0.1)',
-    sectionBg: 'linear-gradient(135deg, #F3E8FF 0%, #EDE9FE 100%)',
-    authorBg: 'linear-gradient(135deg, #EDE9FE 0%, #DDD6FE 100%)'
+    primary: "#805AD5",
+    secondary: "#553C9A",
+    accent: "#F687B3",
+    background: "linear-gradient(135deg, #2D1B69 0%, #553C9A 100%)",
+    text: "#FFFFFF",
+    gradient: "linear-gradient(135deg, #1A1B23 0%, #2D1B69 100%)",
+    cardBg: "linear-gradient(135deg, #1A1B23 0%, #2D1B69 100%)",
+    statBg: "rgba(255, 255, 255, 0.1)",
+    sectionBg: "linear-gradient(135deg, #2D1B69 0%, #553C9A 100%)",
+    authorBg: "linear-gradient(135deg, #2D1B69 0%, #553C9A 100%)",
   },
-  // Forest Green - Natural and growth-focused
+  // Dark Emerald - Nature inspired
   {
-    primary: '#27AE60',
-    secondary: '#229954',
-    accent: '#F39C12',
-    background: 'linear-gradient(135deg, #27AE60 0%, #229954 100%)',
-    text: '#2C3E50',
-    gradient: 'linear-gradient(135deg, #27AE60 0%, #229954 100%)',
-    cardBg: 'linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 100%)',
-    statBg: 'rgba(39, 174, 96, 0.1)',
-    sectionBg: 'linear-gradient(135deg, #DCFCE7 0%, #BBF7D0 100%)',
-    authorBg: 'linear-gradient(135deg, #BBF7D0 0%, #A7F3D0 100%)'
+    primary: "#10B981",
+    secondary: "#047857",
+    accent: "#FBBF24",
+    background: "linear-gradient(135deg, #064E3B 0%, #047857 100%)",
+    text: "#FFFFFF",
+    gradient: "linear-gradient(135deg, #022C22 0%, #064E3B 100%)",
+    cardBg: "linear-gradient(135deg, #022C22 0%, #064E3B 100%)",
+    statBg: "rgba(255, 255, 255, 0.1)",
+    sectionBg: "linear-gradient(135deg, #064E3B 0%, #047857 100%)",
+    authorBg: "linear-gradient(135deg, #064E3B 0%, #047857 100%)",
   },
-  // Golden Hour - Warm and optimistic
+  // Dark Amber - Warm glow
   {
-    primary: '#F39C12',
-    secondary: '#E67E22',
-    accent: '#E74C3C',
-    background: 'linear-gradient(135deg, #F39C12 0%, #E67E22 100%)',
-    text: '#2C3E50',
-    gradient: 'linear-gradient(135deg, #F39C12 0%, #E67E22 100%)',
-    cardBg: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)',
-    statBg: 'rgba(243, 156, 18, 0.1)',
-    sectionBg: 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)',
-    authorBg: 'linear-gradient(135deg, #FDE68A 0%, #FCD34D 100%)'
+    primary: "#F59E0B",
+    secondary: "#D97706",
+    accent: "#EF4444",
+    background: "linear-gradient(135deg, #92400E 0%, #B45309 100%)",
+    text: "#FFFFFF",
+    gradient: "linear-gradient(135deg, #451A03 0%, #92400E 100%)",
+    cardBg: "linear-gradient(135deg, #451A03 0%, #92400E 100%)",
+    statBg: "rgba(255, 255, 255, 0.1)",
+    sectionBg: "linear-gradient(135deg, #92400E 0%, #B45309 100%)",
+    authorBg: "linear-gradient(135deg, #92400E 0%, #B45309 100%)",
   },
-  // Rose Garden - Elegant and sophisticated
+  // Dark Rose - Elegant
   {
-    primary: '#E91E63',
-    secondary: '#C2185B',
-    accent: '#9C27B0',
-    background: 'linear-gradient(135deg, #E91E63 0%, #C2185B 100%)',
-    text: '#2C3E50',
-    gradient: 'linear-gradient(135deg, #E91E63 0%, #C2185B 100%)',
-    cardBg: 'linear-gradient(135deg, #FDF2F8 0%, #FCE7F3 100%)',
-    statBg: 'rgba(233, 30, 99, 0.1)',
-    sectionBg: 'linear-gradient(135deg, #FCE7F3 0%, #FBCFE8 100%)',
-    authorBg: 'linear-gradient(135deg, #FBCFE8 0%, #F9A8D4 100%)'
+    primary: "#EC4899",
+    secondary: "#BE185D",
+    accent: "#8B5CF6",
+    background: "linear-gradient(135deg, #831843 0%, #BE185D 100%)",
+    text: "#FFFFFF",
+    gradient: "linear-gradient(135deg, #4C1D24 0%, #831843 100%)",
+    cardBg: "linear-gradient(135deg, #4C1D24 0%, #831843 100%)",
+    statBg: "rgba(255, 255, 255, 0.1)",
+    sectionBg: "linear-gradient(135deg, #831843 0%, #BE185D 100%)",
+    authorBg: "linear-gradient(135deg, #831843 0%, #BE185D 100%)",
   },
-  // Teal Wave - Fresh and modern
+  // Dark Teal - Modern
   {
-    primary: '#1ABC9C',
-    secondary: '#16A085',
-    accent: '#3498DB',
-    background: 'linear-gradient(135deg, #1ABC9C 0%, #16A085 100%)',
-    text: '#2C3E50',
-    gradient: 'linear-gradient(135deg, #1ABC9C 0%, #16A085 100%)',
-    cardBg: 'linear-gradient(135deg, #F0FDFA 0%, #CCFBF1 100%)',
-    statBg: 'rgba(26, 188, 156, 0.1)',
-    sectionBg: 'linear-gradient(135deg, #CCFBF1 0%, #99F6E4 100%)',
-    authorBg: 'linear-gradient(135deg, #99F6E4 0%, #5EEAD4 100%)'
+    primary: "#14B8A6",
+    secondary: "#0F766E",
+    accent: "#F472B6",
+    background: "linear-gradient(135deg, #134E4A 0%, #0F766E 100%)",
+    text: "#FFFFFF",
+    gradient: "linear-gradient(135deg, #042F2E 0%, #134E4A 100%)",
+    cardBg: "linear-gradient(135deg, #042F2E 0%, #134E4A 100%)",
+    statBg: "rgba(255, 255, 255, 0.1)",
+    sectionBg: "linear-gradient(135deg, #134E4A 0%, #0F766E 100%)",
+    authorBg: "linear-gradient(135deg, #134E4A 0%, #0F766E 100%)",
   },
-  // Midnight Blue - Professional and trustworthy
+  // Dark Steel - Industrial
   {
-    primary: '#2C3E50',
-    secondary: '#34495E',
-    accent: '#E74C3C',
-    background: 'linear-gradient(135deg, #2C3E50 0%, #34495E 100%)',
-    text: '#2C3E50',
-    gradient: 'linear-gradient(135deg, #2C3E50 0%, #34495E 100%)',
-    cardBg: 'linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%)',
-    statBg: 'rgba(44, 62, 80, 0.1)',
-    sectionBg: 'linear-gradient(135deg, #F1F5F9 0%, #E2E8F0 100%)',
-    authorBg: 'linear-gradient(135deg, #E2E8F0 0%, #CBD5E1 100%)'
-  }
+    primary: "#64748B",
+    secondary: "#475569",
+    accent: "#F97316",
+    background: "linear-gradient(135deg, #334155 0%, #475569 100%)",
+    text: "#FFFFFF",
+    gradient: "linear-gradient(135deg, #0F172A 0%, #334155 100%)",
+    cardBg: "linear-gradient(135deg, #0F172A 0%, #1E293B 100%)",
+    statBg: "rgba(255, 255, 255, 0.1)",
+    sectionBg: "linear-gradient(135deg, #1E293B 0%, #334155 100%)",
+    authorBg: "linear-gradient(135deg, #1E293B 0%, #334155 100%)",
+  },
 ];
 
 export const generateColorPalette = (): ColorPalette => {

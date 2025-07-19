@@ -1,3 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Clean download styles - removes all problematic elements */
+.download-clean * {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.download-clean {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.download-clean .border,
+.download-clean .border-white,
+.download-clean .border-white\/10,
+.download-clean .border-white\/20,
+.download-clean .border-white\/30,
+.download-clean .border-gray-200\/50 {
+  border: none !important;
+}
+
+.download-clean .shadow-2xl,
+.download-clean .shadow-lg,
+.download-clean .shadow-xl {
+  box-shadow: none !important;
+}
+
+.download-clean .backdrop-blur-sm,
+.download-clean .backdrop-blur {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}

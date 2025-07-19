@@ -1,50 +1,53 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Github } from 'lucide-react';
-import AnimatedBackground from './AnimatedBackground';
-import InputCard from './InputCard';
-import RepoCard from './RepoCard';
-import { useApi } from '../context/ApiContext';
+import React, { useState, useRef } from "react";
+import { Github } from "lucide-react";
+import AnimatedBackground from "./AnimatedBackground";
+import InputCard from "./InputCard";
+import RepoCard from "./RepoCard";
+import { useApi } from "../context/ApiContext";
+import type { RepositoryData, ButtonState } from "../types";
 
 const Hero: React.FC = () => {
-  const [url, setUrl] = useState('');
-  const [buttonState, setButtonState] = useState<'initial' | 'generating' | 'generated'>('initial');
-  const [repoData, setRepoData] = useState<any>(null);
+  const [url, setUrl] = useState("");
+  const [buttonState, setButtonState] = useState<ButtonState>("initial");
+  const [repoData, setRepoData] = useState<RepositoryData | null>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const { fetchRepositoryData } = useApi();
 
   const handleGenerateCard = async () => {
     if (!url.trim()) return;
-    
-    setButtonState('generating');
+
+    setButtonState("generating");
     try {
       const data = await fetchRepositoryData(url);
       setRepoData(data);
-      setButtonState('generated');
+      setButtonState("generated");
     } catch (error) {
-      console.error('Error generating card:', error);
-      setButtonState('initial');
-      alert('Failed to fetch repository data. Please check the URL and try again.');
+      console.error("Error generating card:", error);
+      setButtonState("initial");
+      alert(
+        "Failed to fetch repository data. Please check the URL and try again."
+      );
     }
   };
 
   const handleCreateAnother = () => {
-    setUrl('');
-    setButtonState('initial');
+    setUrl("");
+    setButtonState("initial");
     setRepoData(null);
   };
 
   const handleUrlChange = (newUrl: string) => {
     setUrl(newUrl);
-    if (buttonState !== 'initial') {
-      setButtonState('initial');
+    if (buttonState !== "initial") {
+      setButtonState("initial");
       setRepoData(null);
     }
   };
 
   return (
     <div ref={heroRef} className="relative min-h-screen flex flex-col">
-      <AnimatedBackground containerRef={heroRef} />
-      
+      <AnimatedBackground />
+
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 py-8">
         {!repoData ? (
           <>
@@ -63,7 +66,8 @@ const Hero: React.FC = () => {
 
             {/* Tagline */}
             <p className="text-xl md:text-2xl text-gray-300 text-center mb-12 max-w-2xl">
-              Generate beautiful report cards for your GitHub repositories with comprehensive insights and statistics
+              Generate beautiful report cards for your GitHub repositories with
+              comprehensive insights and statistics
             </p>
 
             {/* Input Card */}
@@ -75,10 +79,7 @@ const Hero: React.FC = () => {
             />
           </>
         ) : (
-          <RepoCard
-            repoData={repoData}
-            onCreateAnother={handleCreateAnother}
-          />
+          <RepoCard repoData={repoData} onCreateAnother={handleCreateAnother} />
         )}
       </div>
     </div>

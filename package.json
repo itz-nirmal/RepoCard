@@ -1,16 +1,29 @@
 {
-  "name": "vite-react-typescript-starter",
+  "name": "repocard",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "Generate beautiful report cards for GitHub repositories with comprehensive insights and statistics",
+  "author": "itz-nirmal",
+  "keywords": [
+    "github",
+    "repository",
+    "report",
+    "card",
+    "statistics",
+    "visualization"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "lint:fix": "eslint . --fix",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "html2canvas": "^1.4.1",
+    "dom-to-image-more": "^3.6.0",
+    "jspdf": "^3.0.1",
     "lucide-react": "^0.344.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
