@@ -295,21 +295,48 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({
   const fetchRepositoryData = async (url: string) => {
     const { owner, repo } = extractRepoInfo(url);
 
+    const headers: HeadersInit = {
+      'Accept': 'application/vnd.github.v3+json',
+    };
+
+    // Add authorization header if token is available
+    const token = import.meta.env.VITE_GITHUB_TOKEN;
+    if (token) {
+      headers['Authorization'] = `token ${token}`;
+    }
+
     try {
-      // Fetch basic repository data
+      // Fetch basic repository data with fresh request to ensure accurate star count
       const repoResponse = await fetch(
-        `https://api.github.com/repos/${owner}/${repo}`
+        `https://api.github.com/repos/${owner}/${repo}`,
+        { 
+          headers,
+          cache: 'no-cache' // Ensure we get fresh data
+        }
       );
       if (!repoResponse.ok) {
         throw new Error("Repository not found");
       }
       const repoData = await repoResponse.json();
 
+      // Log the actual data for debugging - STARS VERIFICATION
+      console.log("🌟 GitHub API Response - STARS VERIFICATION:", {
+        repo_name: `${owner}/${repo}`,
+        stargazers_count: repoData.stargazers_count,
+        forks_count: repoData.forks_count,
+        watchers_count: repoData.watchers_count,
+        subscribers_count: repoData.subscribers_count,
+        open_issues_count: repoData.open_issues_count,
+        github_url: `https://github.com/${owner}/${repo}`,
+        api_url: `https://api.github.com/repos/${owner}/${repo}`
+      });
+
       // Fetch languages
       let languages = {};
       try {
         const languagesResponse = await fetch(
-          `https://api.github.com/repos/${owner}/${repo}/languages`
+          `https://api.github.com/repos/${owner}/${repo}/languages`,
+          { headers }
         );
         if (languagesResponse.ok) {
           languages = await languagesResponse.json();
@@ -318,17 +345,97 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({
         console.warn("Failed to fetch languages:", error);
       }
 
-      // Fetch contributors
+      // Fetch owner's full profile data to get display name
+      let ownerData = repoData.owner;
+      try {
+        const ownerResponse = await fetch(
+          `https://api.github.com/users/${owner}`,
+          { headers }
+        );
+        if (ownerResponse.ok) {
+          ownerData = await ownerResponse.json();
+        }
+      } catch (error) {
+        console.warn("Failed to fetch owner profile:", error);
+      }
+
+      // Fetch contributors with accurate count - IMPROVED METHOD
       let contributors = [];
       let contributorCount = 0;
       try {
+        // First, get the first page to check Link header for total count
         const contributorsResponse = await fetch(
-          `https://api.github.com/repos/${owner}/${repo}/contributors?per_page=10`
+          `https://api.github.com/repos/${owner}/${repo}/contributors?per_page=1`,
+          { headers }
         );
+        
         if (contributorsResponse.ok) {
-          contributors = await contributorsResponse.json();
-          contributorCount = contributors.length;
+          const firstPageData = await contributorsResponse.json();
+          const linkHeader = contributorsResponse.headers.get('Link');
+          
+          // Parse the Link header to get total count
+          if (linkHeader) {
+            const lastPageMatch = linkHeader.match(/page=(\d+)>; rel="last"/);
+            if (lastPageMatch) {
+              contributorCount = parseInt(lastPageMatch[1], 10);
+            }
+          }
+          
+          // If we couldn't get count from Link header, fetch more pages
+          if (contributorCount === 0) {
+            // Fetch first 100 contributors for display and count
+            const fullContributorsResponse = await fetch(
+              `https://api.github.com/repos/${owner}/${repo}/contributors?per_page=100`,
+              { headers }
+            );
+            if (fullContributorsResponse.ok) {
+              contributors = await fullContributorsResponse.json();
+              contributorCount = contributors.length;
+              
+              // Check if there are more pages
+              const fullLinkHeader = fullContributorsResponse.headers.get('Link');
+              if (fullLinkHeader && fullLinkHeader.includes('rel="next"')) {
+                // There are more contributors, try to get a better estimate
+                let page = 2;
+                let hasMore = true;
+                while (hasMore && page <= 10) { // Limit to 10 pages to avoid rate limits
+                  const pageResponse = await fetch(
+                    `https://api.github.com/repos/${owner}/${repo}/contributors?per_page=100&page=${page}`,
+                    { headers }
+                  );
+                  if (pageResponse.ok) {
+                    const pageData = await pageResponse.json();
+                    contributorCount += pageData.length;
+                    if (pageData.length < 100) {
+                      hasMore = false;
+                    }
+                    page++;
+                  } else {
+                    hasMore = false;
+                  }
+                }
+              }
+            }
+          } else {
+            // We have the total count, now fetch top contributors for display
+            const topContributorsResponse = await fetch(
+              `https://api.github.com/repos/${owner}/${repo}/contributors?per_page=10`,
+              { headers }
+            );
+            if (topContributorsResponse.ok) {
+              contributors = await topContributorsResponse.json();
+            }
+          }
         }
+        
+        console.log("👥 Contributors Data - VERIFICATION:", {
+          repo_name: `${owner}/${repo}`,
+          contributor_count: contributorCount,
+          top_contributors_fetched: contributors.length,
+          github_contributors_url: `https://github.com/${owner}/${repo}/graphs/contributors`,
+          method_used: contributorCount > 0 ? "Link header parsing" : "Page counting"
+        });
+        
       } catch (error) {
         console.warn("Failed to fetch contributors:", error);
       }
@@ -338,7 +445,8 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({
       if (!repoData.description) {
         try {
           const readmeResponse = await fetch(
-            `https://api.github.com/repos/${owner}/${repo}/readme`
+            `https://api.github.com/repos/${owner}/${repo}/readme`,
+            { headers }
           );
           if (readmeResponse.ok) {
             const readmeData = await readmeResponse.json();
@@ -355,13 +463,28 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       }
 
-      return {
+      // Return the data with EXACT GitHub API values - NO MODIFICATIONS
+      const finalData = {
         ...repoData,
+        owner: ownerData, // Use the fetched owner data with display name
         description: repoData.description || generatedDescription,
         languages,
         contributors,
         contributorCount,
+        // Use EXACT values from GitHub API - these should match GitHub exactly
+        stargazers_count: repoData.stargazers_count,
+        forks_count: repoData.forks_count,
+        watchers_count: repoData.subscribers_count || repoData.watchers_count,
+        open_issues_count: repoData.open_issues_count,
       };
+
+      console.log("🎯 Final Data Being Returned:", {
+        stargazers_count: finalData.stargazers_count,
+        contributor_count: finalData.contributorCount,
+        repo_name: finalData.name
+      });
+
+      return finalData;
     } catch (error) {
       console.error("Error fetching repository data:", error);
       throw error;

@@ -3,6 +3,7 @@ export interface GitHubUser {
   login: string;
   avatar_url: string;
   contributions?: number;
+  name?: string;
 }
 
 export interface GitHubRepository {

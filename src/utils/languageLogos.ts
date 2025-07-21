@@ -15,7 +15,7 @@ export const getLanguageLogo = (language: string): string => {
     PHP: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg",
     Ruby: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ruby/ruby-original.svg",
     Go: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg",
-    Rust: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-plain.svg",
+    Rust: "https://raw.githubusercontent.com/devicons/devicon/master/icons/rust/rust-plain.svg",
     Swift:
       "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg",
     Kotlin:

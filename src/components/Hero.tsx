@@ -4,12 +4,15 @@ import AnimatedBackground from "./AnimatedBackground";
 import InputCard from "./InputCard";
 import RepoCard from "./RepoCard";
 import { useApi } from "../context/ApiContext";
+import { generateColorPalette } from "../utils/colorGenerator";
 import type { RepositoryData, ButtonState } from "../types";
+import type { ColorPalette } from "../utils/colorGenerator";
 
 const Hero: React.FC = () => {
   const [url, setUrl] = useState("");
   const [buttonState, setButtonState] = useState<ButtonState>("initial");
   const [repoData, setRepoData] = useState<RepositoryData | null>(null);
+  const [colorPalette, setColorPalette] = useState<ColorPalette | null>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const { fetchRepositoryData } = useApi();
 
@@ -20,6 +23,8 @@ const Hero: React.FC = () => {
     try {
       const data = await fetchRepositoryData(url);
       setRepoData(data);
+      // Generate new color palette only when generating a new card
+      setColorPalette(generateColorPalette());
       setButtonState("generated");
     } catch (error) {
       console.error("Error generating card:", error);
@@ -34,6 +39,7 @@ const Hero: React.FC = () => {
     setUrl("");
     setButtonState("initial");
     setRepoData(null);
+    setColorPalette(null);
   };
 
   const handleUrlChange = (newUrl: string) => {
@@ -41,6 +47,7 @@ const Hero: React.FC = () => {
     if (buttonState !== "initial") {
       setButtonState("initial");
       setRepoData(null);
+      setColorPalette(null);
     }
   };
 
@@ -79,7 +86,11 @@ const Hero: React.FC = () => {
             />
           </>
         ) : (
-          <RepoCard repoData={repoData} onCreateAnother={handleCreateAnother} />
+          <RepoCard 
+            repoData={repoData} 
+            onCreateAnother={handleCreateAnother} 
+            colorPalette={colorPalette}
+          />
         )}
       </div>
     </div>
