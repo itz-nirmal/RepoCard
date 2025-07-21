@@ -72,10 +72,21 @@ const Hero: React.FC = () => {
             </div>
 
             {/* Tagline */}
-            <p className="text-xl md:text-2xl text-gray-300 text-center mb-12 max-w-2xl">
+            <p className="text-xl md:text-2xl text-gray-300 text-center mb-8 max-w-2xl">
               Generate beautiful report cards for your GitHub repositories with
               comprehensive insights and statistics
             </p>
+
+            {/* View GitHub Button */}
+            <a
+              href="https://github.com/itz-nirmal/RepoCard"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 mb-12 bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 text-white font-medium rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg border border-gray-600 hover:border-gray-500"
+            >
+              <Github className="w-5 h-5" />
+              View GitHub
+            </a>
 
             {/* Input Card */}
             <InputCard
