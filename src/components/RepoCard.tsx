@@ -29,7 +29,11 @@ interface RepoCardProps {
   colorPalette: ColorPalette | null;
 }
 
-const RepoCard: React.FC<RepoCardProps> = ({ repoData, onCreateAnother, colorPalette }) => {
+const RepoCard: React.FC<RepoCardProps> = ({
+  repoData,
+  onCreateAnother,
+  colorPalette,
+}) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = React.useState(false);
 
@@ -279,7 +283,7 @@ const RepoCard: React.FC<RepoCardProps> = ({ repoData, onCreateAnother, colorPal
                   >
                     {formatNumber(repoData.watchers_count)}
                   </div>
-                  <div className="text-xs text-gray-300">Visitors</div>
+                  <div className="text-xs text-gray-300">Watchers</div>
                 </div>
               </div>
               <div
@@ -296,7 +300,9 @@ const RepoCard: React.FC<RepoCardProps> = ({ repoData, onCreateAnother, colorPal
                   >
                     {repoData.contributorCount || "N/A"}
                   </div>
-                  <div className="text-xs text-gray-300">Active Contributors</div>
+                  <div className="text-xs text-gray-300">
+                    Active Contributors
+                  </div>
                 </div>
               </div>
             </div>
@@ -421,42 +427,60 @@ const RepoCard: React.FC<RepoCardProps> = ({ repoData, onCreateAnother, colorPal
                 repoData.contributors.length > 3 ? (
                   // Show top 3 contributors with badges - Side by Side
                   <div className="flex gap-2 h-full">
-                    {repoData.contributors.slice(0, 3).map((contributor, index) => {
-                      const badgeConfig = [
-                        { icon: Trophy, color: 'text-yellow-500', bg: 'bg-yellow-500/20' }, // Gold
-                        { icon: Medal, color: 'text-gray-400', bg: 'bg-gray-400/20' },      // Silver
-                        { icon: Award, color: 'text-amber-600', bg: 'bg-amber-600/20' }     // Bronze
-                      ];
-                      const BadgeIcon = badgeConfig[index].icon;
-                      
-                      return (
-                        <div
-                          key={contributor.login}
-                          className="flex-1 flex flex-col items-center gap-2 p-3 rounded-lg"
-                          style={{ backgroundColor: currentPalette.statBg }}
-                          data-contributor-item="true"
-                        >
-                          <div className="relative">
-                            <img
-                              src={contributor.avatar_url}
-                              alt={contributor.login}
-                              className="w-8 h-8 rounded-full flex-shrink-0"
-                            />
-                            <div className={`absolute -top-1 -right-1 w-4 h-4 ${badgeConfig[index].bg} rounded-full flex items-center justify-center`}>
-                              <BadgeIcon className={`w-2.5 h-2.5 ${badgeConfig[index].color}`} />
+                    {repoData.contributors
+                      .slice(0, 3)
+                      .map((contributor, index) => {
+                        const badgeConfig = [
+                          {
+                            icon: Trophy,
+                            color: "text-yellow-500",
+                            bg: "bg-yellow-500/20",
+                          }, // Gold
+                          {
+                            icon: Medal,
+                            color: "text-gray-400",
+                            bg: "bg-gray-400/20",
+                          }, // Silver
+                          {
+                            icon: Award,
+                            color: "text-amber-600",
+                            bg: "bg-amber-600/20",
+                          }, // Bronze
+                        ];
+                        const BadgeIcon = badgeConfig[index].icon;
+
+                        return (
+                          <div
+                            key={contributor.login}
+                            className="flex-1 flex flex-col items-center gap-2 p-3 rounded-lg"
+                            style={{ backgroundColor: currentPalette.statBg }}
+                            data-contributor-item="true"
+                          >
+                            <div className="relative">
+                              <img
+                                src={contributor.avatar_url}
+                                alt={contributor.login}
+                                className="w-8 h-8 rounded-full flex-shrink-0"
+                              />
+                              <div
+                                className={`absolute -top-1 -right-1 w-4 h-4 ${badgeConfig[index].bg} rounded-full flex items-center justify-center`}
+                              >
+                                <BadgeIcon
+                                  className={`w-2.5 h-2.5 ${badgeConfig[index].color}`}
+                                />
+                              </div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-xs font-medium truncate leading-none text-white max-w-full">
+                                {contributor.login}
+                              </div>
+                              <div className="text-xs text-white/70 mt-1">
+                                {formatNumber(contributor.contributions || 0)}
+                              </div>
                             </div>
                           </div>
-                          <div className="text-center">
-                            <div className="text-xs font-medium truncate leading-none text-white max-w-full">
-                              {contributor.login}
-                            </div>
-                            <div className="text-xs text-white/70 mt-1">
-                              {formatNumber(contributor.contributions || 0)}
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
                   </div>
                 ) : (
                   // Show single top contributor for repos with 3 or fewer contributors
@@ -481,7 +505,9 @@ const RepoCard: React.FC<RepoCardProps> = ({ repoData, onCreateAnother, colorPal
                         {repoData.contributors[0].login}
                       </div>
                       <div className="text-xs text-white/70 mt-1">
-                        {formatNumber(repoData.contributors[0].contributions || 0)}{" "}
+                        {formatNumber(
+                          repoData.contributors[0].contributions || 0
+                        )}{" "}
                         contributions
                       </div>
                     </div>
