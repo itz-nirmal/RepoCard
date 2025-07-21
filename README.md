@@ -111,7 +111,6 @@ Make sure you have the following installed:
 - Supports various URL formats:
   - `https://github.com/username/repository`
   - `github.com/username/repository`
-  - `username/repository`
 
 ### ⚡ **Step 2: Generate Report Card**
 
